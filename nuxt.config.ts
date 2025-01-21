@@ -4,8 +4,10 @@ export default defineNuxtConfig({
   buildDir: 'dist',
   generate: {
     dir: 'dist', // Asegúrate de que coincida con el Output Directory en Vercel
+    fallback: '404.html', // Genera un archivo fallback para rutas no encontradas
   },
   app: {
+    baseURL: '/',
     head: {
       meta: [
         // <meta name="viewport" content="width=device-width, initial-scale=1">
