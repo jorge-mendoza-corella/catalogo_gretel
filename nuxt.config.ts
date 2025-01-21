@@ -4,7 +4,6 @@ export default defineNuxtConfig({
   buildDir: 'dist',
   generate: {
     dir: 'dist', // Asegúrate de que coincida con el Output Directory en Vercel
-    fallback: '404.html', // Genera un archivo fallback para rutas no encontradas
   },
   app: {
     baseURL: '/',
@@ -56,7 +55,7 @@ export default defineNuxtConfig({
   // nitro server settings
   nitro: {
     compatibilityDate: process.env.COMPATIBILITY_DATE || '2025-01-09',
-    preset: 'firebase',
+    preset: 'vercel',
     firebase: {
       gen: 2, // Asegúrate de que estés usando Firebase Functions Gen 2
       serverFunctionName: 'adminssr',
