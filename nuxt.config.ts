@@ -2,6 +2,9 @@
 export default defineNuxtConfig({
   target: 'static',
   buildDir: 'dist',
+  generate: {
+    dir: 'dist', // Asegúrate de que coincida con el Output Directory en Vercel
+  },
   app: {
     head: {
       meta: [
@@ -9,7 +12,7 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       ],
       // add universal page title
-      title: 'Sozu - Administrador',
+      title: 'Catalogo de canciones',
       // <link rel="icon" type="shortcut icon" href="/icon-128.png">
       // <link rel="apple-touch-icon" type="image/x-icon" href="/icon-192.png">
       link: [
@@ -92,10 +95,6 @@ export default defineNuxtConfig({
       exclude: ['primeicons','primeflex'],
     },
   },
-
-  plugins: [
-    '~/plugins/firebase.client.ts',
-  ],
 
   compatibilityDate: '2025-01-09',
 })
