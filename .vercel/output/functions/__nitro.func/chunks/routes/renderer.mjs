@@ -73,7 +73,7 @@ const unheadPlugins = true ? [CapoPlugin({ track: true })] : [];
 
 const renderSSRHeadOptions = {"omitLineBreaks":false};
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"}],"link":[{"rel":"icon","type":"shortcut icon","href":"/icon-128.png"},{"rel":"apple-touch-icon","type":"image/x-icon","href":"/icon-192.png"}],"style":[],"script":[],"noscript":[],"title":"Catalogo de canciones"};
+const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"}],"link":[],"style":[],"script":[],"noscript":[]};
 
 const appRootTag = "div";
 
