@@ -4,6 +4,7 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'vercel',
+    node: '18' // Asegura que el runtime sea compatible
   },
 
   app: {
