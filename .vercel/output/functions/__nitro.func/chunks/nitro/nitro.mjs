@@ -785,10 +785,10 @@ class Hasher extends BufferedBlockAlgorithm {
   }
 }
 
-var __defProp$3 = Object.defineProperty;
-var __defNormalProp$3 = (obj, key, value) => key in obj ? __defProp$3(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$3 = (obj, key, value) => {
-  __defNormalProp$3(obj, key + "" , value);
+var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => {
+  __defNormalProp(obj, key + "" , value);
   return value;
 };
 const H = [
@@ -871,7 +871,7 @@ const W = [];
 class SHA256 extends Hasher {
   constructor() {
     super(...arguments);
-    __publicField$3(this, "_hash", new WordArray([...H]));
+    __publicField(this, "_hash", new WordArray([...H]));
   }
   /**
    * Resets the internal state of the hash object to initial values.
@@ -1888,21 +1888,16 @@ function hasProp(obj, prop) {
   }
 }
 
-var __defProp$2 = Object.defineProperty;
-var __defNormalProp$2 = (obj, key, value) => key in obj ? __defProp$2(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField$2 = (obj, key, value) => {
-  __defNormalProp$2(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
 class H3Error extends Error {
+  static __h3_error__ = true;
+  statusCode = 500;
+  fatal = false;
+  unhandled = false;
+  statusMessage;
+  data;
+  cause;
   constructor(message, opts = {}) {
     super(message, opts);
-    __publicField$2(this, "statusCode", 500);
-    __publicField$2(this, "fatal", false);
-    __publicField$2(this, "unhandled", false);
-    __publicField$2(this, "statusMessage");
-    __publicField$2(this, "data");
-    __publicField$2(this, "cause");
     if (opts.cause && !this.cause) {
       this.cause = opts.cause;
     }
@@ -1921,7 +1916,6 @@ class H3Error extends Error {
     return obj;
   }
 }
-__publicField$2(H3Error, "__h3_error__", true);
 function createError$1(input) {
   if (typeof input === "string") {
     return new H3Error(input);
@@ -2409,6 +2403,7 @@ function sendWebResponse(event, response) {
 const PayloadMethods = /* @__PURE__ */ new Set(["PATCH", "POST", "PUT", "DELETE"]);
 const ignoredHeaders = /* @__PURE__ */ new Set([
   "transfer-encoding",
+  "accept-encoding",
   "connection",
   "keep-alive",
   "upgrade",
@@ -2429,7 +2424,7 @@ async function proxyRequest(event, target, opts = {}) {
   }
   const method = opts.fetchOptions?.method || event.method;
   const fetchHeaders = mergeHeaders$1(
-    getProxyRequestHeaders(event),
+    getProxyRequestHeaders(event, { host: target.startsWith("/") }),
     opts.fetchOptions?.headers,
     opts.headers
   );
@@ -2521,11 +2516,11 @@ async function sendProxy(event, target, opts = {}) {
   }
   return event.node.res.end();
 }
-function getProxyRequestHeaders(event) {
+function getProxyRequestHeaders(event, opts) {
   const headers = /* @__PURE__ */ Object.create(null);
   const reqHeaders = getRequestHeaders(event);
   for (const name in reqHeaders) {
-    if (!ignoredHeaders.has(name)) {
+    if (!ignoredHeaders.has(name) || name === "host" && opts?.host) {
       headers[name] = reqHeaders[name];
     }
   }
@@ -2536,7 +2531,9 @@ function fetchWithEvent(event, req, init, options) {
     ...init,
     context: init?.context || event.context,
     headers: {
-      ...getProxyRequestHeaders(event),
+      ...getProxyRequestHeaders(event, {
+        host: typeof req === "string" && req.startsWith("/")
+      }),
       ...init?.headers
     }
   });
@@ -2585,32 +2582,26 @@ function mergeHeaders$1(defaults, ...inputs) {
   return merged;
 }
 
-var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
 class H3Event {
+  "__is_event__" = true;
+  // Context
+  node;
+  // Node
+  web;
+  // Web
+  context = {};
+  // Shared
+  // Request
+  _method;
+  _path;
+  _headers;
+  _requestBody;
+  // Response
+  _handled = false;
+  // Hooks
+  _onBeforeResponseCalled;
+  _onAfterResponseCalled;
   constructor(req, res) {
-    __publicField(this, "__is_event__", true);
-    // Context
-    __publicField(this, "node");
-    // Node
-    __publicField(this, "web");
-    // Web
-    __publicField(this, "context", {});
-    // Shared
-    // Request
-    __publicField(this, "_method");
-    __publicField(this, "_path");
-    __publicField(this, "_headers");
-    __publicField(this, "_requestBody");
-    // Response
-    __publicField(this, "_handled", false);
-    // Hooks
-    __publicField(this, "_onBeforeResponseCalled");
-    __publicField(this, "_onAfterResponseCalled");
     this.node = { req, res };
   }
   // --- Request ---
@@ -5124,7 +5115,7 @@ function _expandFromEnv(value) {
 const _inlineRuntimeConfig = {
   "app": {
     "baseURL": "/",
-    "buildId": "3bbad578-112a-4421-9ec8-8b4a6bdff532",
+    "buildId": "55eb3de6-9934-4bc4-ad85-58b07d3bd5d9",
     "buildAssetsDir": "/_nuxt/",
     "cdnURL": ""
   },
