@@ -6,8 +6,7 @@
     "dev": "NODE_OPTIONS='--no-deprecation' nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "test:unit": "vitest --config ./vitest.config.js"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@editorjs/editorjs": "^2.28.2",
